@@ -1,0 +1,450 @@
+
+<script setup>
+import { usePatientListStore } from '@/views/apps/patient/usePatientListStore';
+import axios from '@axios';
+import * as validate from '@validators';
+import { useToast } from 'vue-toast-notification';
+const $toast = useToast()
+const router = useRouter()
+const route = useRoute()
+
+const PatientListStore = usePatientListStore()
+const roles = ref([]);
+const isPasswordVisible = ref(false)
+
+PatientListStore.fetchRoles().then(response => {
+   roles.value = response.data.data.data
+})
+const actives = [
+  { value: 0, name:"Deactive"},
+  { value: 1, name:"Active"},
+]
+const name = ref()
+const middle_name = ref()
+const last_name = ref()
+const is_send_emails = ref()
+const is_leave_voice = ref()
+const is_leave_text = ref()
+const address1 = ref()
+const address2 = ref()
+const city = ref()
+const state = ref()
+const zip_code = ref()
+const birth_date = ref()
+const gender = ref()
+const relationship_status = ref()
+const employment_status = ref()
+const insurance_number = ref()
+const billing = ref()
+
+const emergency_name = ref()
+const emergency_relation = ref()
+const emergency_email = ref()
+const emergency_phone_number = ref()
+const emergency_is_send_emails = ref()
+const emergency_is_leave_voice = ref()
+const emergency_is_leave_text = ref()
+const email    = ref()
+const phone    = ref()
+const password    = ref()
+const role      = ref()
+const active    = ref()
+
+</script>
+<template>
+  <VRow>
+    <VCol
+      cols="6"
+      md="6"
+    >
+      <VCard
+        :title="$t('Patient Profile')"
+        style="background-color: rgb(115 103 240);"
+      />
+
+      <VCard :title="$t('* Basic Information')">
+        <VCol cols="12">
+          <VRow>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                First Name :
+              </VSubheader>{{ name }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Middle Name :
+              </VSubheader>{{ middle_name }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Last Name :
+              </VSubheader>{{ last_name }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Email :
+              </VSubheader>{{ email }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Phone :
+              </VSubheader>{{ phone }}
+            </VCol>
+              
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Status :
+              </VSubheader>{{ (status == 0)?'InActive':'Active' }}
+            </VCol>
+          </VRow>
+              
+          <VRow v-if="!name">
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <div class="loading">
+                <div class="effect-1 effects" />
+                <div class="effect-2 effects" />
+                <div class="effect-3 effects" />
+              </div>
+            </VCol>  
+          </VRow>
+        </VCol>
+      </VCard><br>
+      <VCard :title="$t('* Address Information')">
+        <VCol cols="12">
+          <VRow>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Address Line 1 :
+              </VSubheader>{{ address1 }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Address Line 2 :
+              </VSubheader>{{ address2 }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                City :
+              </VSubheader>{{ city }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                State :
+              </VSubheader>{{ state }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Zip Code :
+              </VSubheader>{{ zip_code }}
+            </VCol>
+          </VRow>
+            
+          <VCol cols="12">
+            <VRow v-if="!name">
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <div class="loading">
+                  <div class="effect-1 effects" />
+                  <div class="effect-2 effects" />
+                  <div class="effect-3 effects" />
+                </div>
+              </VCol>  
+            </VRow>
+          </VCol>
+          <VRow v-if="!name">
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <div class="loading">
+                <div class="effect-1 effects" />
+                <div class="effect-2 effects" />
+                <div class="effect-3 effects" />
+              </div>
+            </VCol>  
+          </VRow>
+        </VCol>
+      </VCard><br>
+
+      <VCard>
+        <VCol cols="12">
+          <VRow>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Birth Date :
+              </VSubheader>{{ birth_date }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Gender :
+              </VSubheader>{{ gender }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Relationship Status :
+              </VSubheader>{{ relationship_status }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Employment Status :
+              </VSubheader>{{ employment_status }}
+            </VCol>
+          </VRow>
+            
+          <VCol cols="12">
+            <VRow v-if="!name">
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <div class="loading">
+                  <div class="effect-1 effects" />
+                  <div class="effect-2 effects" />
+                  <div class="effect-3 effects" />
+                </div>
+              </VCol>  
+            </VRow>
+          </VCol>
+          <VRow v-if="!name">
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <div class="loading">
+                <div class="effect-1 effects" />
+                <div class="effect-2 effects" />
+                <div class="effect-3 effects" />
+              </div>
+            </VCol>  
+          </VRow>
+        </VCol>
+      </VCard><br>
+      <VCard :title="$t('* Emergency Contact')">
+        <VCol cols="12">
+          <VRow>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Name :
+              </VSubheader>{{ emergency_name }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Relation :
+              </VSubheader>{{ emergency_relation }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Email :
+              </VSubheader>{{ emergency_email }}
+            </VCol>
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Phone Number :
+              </VSubheader>{{ emergency_phone_number }}
+            </VCol>
+          </VRow>
+            
+              
+          <VCol cols="12">
+            <VRow v-if="!name">
+              <VCol
+                cols="12"
+                md="6"
+              >
+                <div class="loading">
+                  <div class="effect-1 effects" />
+                  <div class="effect-2 effects" />
+                  <div class="effect-3 effects" />
+                </div>
+              </VCol>  
+            </VRow>
+          </VCol>
+          <VRow v-if="!name">
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <div class="loading">
+                <div class="effect-1 effects" />
+                <div class="effect-2 effects" />
+                <div class="effect-3 effects" />
+              </div>
+            </VCol>  
+          </VRow>
+        </VCol>
+      </VCard><br>
+
+      <VCard :title="$t('* Rules Of Billing / Credit')">
+        <VCol cols="12">
+          <VRow>
+            <VCol
+              cols="6"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                * Rules Of Billing
+              </VSubheader><br><br>
+            </VCol>
+            <VCol
+              cols="6"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                * Insurance Information
+              </VSubheader><br><br>
+            </VCol>
+          </VRow>
+              
+          <VRow>
+            <VCol
+              cols="6"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Rules Of Billing :
+              </VSubheader>{{ billing }}
+            </VCol>
+            <VCol
+              cols="6"
+              md="6"
+            >
+              <VSubheader style="font-weight: bold;">
+                Insurance Number :
+              </VSubheader>{{ insurance_number }}
+            </VCol>
+          </VRow>
+            
+          <VRow v-if="!name">
+            <VCol
+              cols="12"
+              md="6"
+            >
+              <div class="loading">
+                <div class="effect-1 effects" />
+                <div class="effect-2 effects" />
+                <div class="effect-3 effects" />
+              </div>
+            </VCol>  
+          </VRow>
+        </VCol>
+      </VCard><br>
+    </VCol>
+
+    <VCol
+      cols="6"
+      md="6"
+    >
+      <VBtn
+        prepend-icon="tabler-plus"
+        :to="{ name: 'note-add',action: 'read',subject: 'patient-create'}"
+      >
+        {{ $t('Add new patient') }}
+      </VBtn><br><br>
+      <VTable class="text-no-wrap">
+        <!-- 👉 table head -->
+        <thead>
+          <tr>
+            <th scope="col">
+              #
+            </th>
+            <th scope="col">
+              {{ $t('Name') }}
+            </th>
+            <th scope="col">
+              {{ $t('Email') }}
+            </th>
+            <th scope="col">
+              {{ $t('Phone') }}
+            </th>
+          </tr>
+        </thead>
+        <!-- 👉 table body -->
+        <tbody>
+          <tr>
+            <!-- 👉 Patient -->
+            <td>1</td>
+            <td>
+              samira
+            </td>
+            <td>
+              samira@gmail.com
+            </td>
+            <td>
+              768965645
+            </td>
+          </tr>
+        </tbody>
+
+        <!-- 👉 table footer  -->
+      </VTable>
+    </VCol>
+  </VRow>
+</template>
+
+<route lang="yaml">
+  meta:
+    action: read
+    subject: patient-show
+</route>
