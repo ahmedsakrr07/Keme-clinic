@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "kemevue-1",
+			"path": "../../../kemevue-1"
+		}
+	],
+	"settings": {}
+}
